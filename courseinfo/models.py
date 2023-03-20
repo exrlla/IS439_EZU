@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.urls import reverse
 
 
 class Period(models.Model):
@@ -30,6 +31,10 @@ class Semester(models.Model):
     def __str__(self):
         return '%s - %s' % (self.year.year, self.period.period_name)
 
+    def get_absolute_url(self):
+        return reverse('courseinfo_semester_detail_urlpattern',
+                       kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['year__year', 'period__period_sequence']
         constraints = [
@@ -44,6 +49,10 @@ class Course(models.Model):
 
     def __str__(self):
         return '%s - %s' % (self.course_number, self.course_name)
+
+    def get_absolute_url(self):
+        return reverse('courseinfo_course_detail_urlpattern',
+                       kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['course_number', 'course_name']
@@ -65,6 +74,10 @@ class Instructor(models.Model):
         else:
             result = '%s, %s (%s)' % (self.last_name, self.first_name, self.disambiguator)
         return result
+
+    def get_absolute_url(self):
+        return reverse('courseinfo_instructor_detail_urlpattern',
+                       kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['last_name', 'first_name', 'disambiguator']
@@ -88,6 +101,10 @@ class Student(models.Model):
             result = '%s, %s (%s)' % (self.last_name, self.first_name, self.disambiguator)
         return result
 
+    def get_absolute_url(self):
+        return reverse('courseinfo_student_detail_urlpattern',
+                       kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['last_name', 'first_name', 'disambiguator']
         constraints = [
@@ -106,6 +123,10 @@ class Section(models.Model):
     def __str__(self):
         return '%s - %s (%s)' % (self.course.course_number, self.section_name, self.semester.__str__())
 
+    def get_absolute_url(self):
+        return reverse('courseinfo_section_detail_urlpattern',
+                       kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['course', 'section_name', 'semester']
         constraints = [
@@ -121,6 +142,10 @@ class Registration(models.Model):
 
     def __str__(self):
         return '%s / %s' % (self.section, self.student)
+
+    def get_absolute_url(self):
+        return reverse('courseinfo_registration_detail_urlpattern',
+                       kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['section', 'student']
