@@ -6,6 +6,11 @@
 
 {% block content %}
     <h2>Semester List</h2>
+        <div>
+    <a href="{% url 'courseinfo_semester_list_urlpattern' %}">
+        Add Semester</a>
+    </div>
+
     <ul>
         {% for semester in semester_list %}
             <li>

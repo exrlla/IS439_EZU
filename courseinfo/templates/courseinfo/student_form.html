@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'courseinfo/base.html' %}
 
-</body>
-</html>
+{% block title %}
+    Add Student
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{% url 'courseinfo_student_create_urlpattern'%}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Student</button>
+    </form>
+{% endblock %}
