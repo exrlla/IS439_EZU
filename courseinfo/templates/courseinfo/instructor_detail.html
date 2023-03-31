@@ -6,6 +6,18 @@
 
 {% block content %}
     <h2>{{ instructor }}</h2>
+    <ul>
+        <li>
+            <a href="{{ instructor.get_update_url }}">
+                Edit Instructor
+            </a>
+        </li>
+    <li>
+        <a href="{{ instructor.get_delete_url }}">
+            Delete Instructor
+        </a>
+    </li>
+    </ul>
 
     <section>
         <table>

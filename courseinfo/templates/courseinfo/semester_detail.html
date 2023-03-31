@@ -6,6 +6,13 @@
 
 {% block content %}
     <h2>{{ semester }}</h2>
+        <ul>
+        <li>
+            <a href="{{ instructor.get_update_url }}">
+                Edit Semester
+            </a>
+        </li>
+    </ul>
 
     <section>
         <h3>Sections</h3>
