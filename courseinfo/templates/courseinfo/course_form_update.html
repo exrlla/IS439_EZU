@@ -1,7 +1,7 @@
 {% extends 'courseinfo/base.html' %}
 
 {% block title %}
-    Update Instructor
+    Update Course
 {% endblock %}
 
 {% block content %}
@@ -10,6 +10,6 @@
         method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Update Course</button>
+        <button type="submit" class="button button-primary">Update Course</button>
     </form>
 {% endblock %}

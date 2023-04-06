@@ -6,17 +6,15 @@
 
 {% block content %}
     <h2>{{ section }}</h2>
-        <ul>
+    <ul class="ezu-button-list">
         <li>
-            <a href="{{ section.get_update_url }}">
-                Edit Section
-            </a>
-        </li>
+          <a href="{{ section.get_update_url }}"
+             class="button button-primary">
+            Edit Section</a></li>
         <li>
-            <a href="{{ section.get_delete_url }}">
-                Delete Section
-            </a>
-        </li>
+          <a href="{{ section.get_delete_url }}"
+             class="button button-primary">
+            Delete Section</a></li>
     </ul>
 
     <section>

@@ -1,4 +1,4 @@
-{%  extends 'courseinfo/base.html' %}
+{% extends 'courseinfo/base.html' %}
 
 {% block title %}
     Course List
@@ -6,11 +6,11 @@
 
 {% block content %}
     <h2>Course List</h2>
-        <div>
-    <a href="{% url 'courseinfo_course_create_urlpattern' %}">
-        Create New Course</a>
+    <div>
+        <a href="{% url 'courseinfo_course_create_urlpattern' %}"
+            class="button button-primary">
+            Create New Course</a>
     </div>
-
     <ul>
         {% for course in course_list %}
             <li>

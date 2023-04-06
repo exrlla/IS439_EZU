@@ -1,7 +1,7 @@
 {% extends 'courseinfo/base.html' %}
 
 {% block title %}
-    Add Semester
+    Create Semester
 {% endblock %}
 
 {% block content %}
@@ -10,6 +10,6 @@
         method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Add Semester</button>
+        <button type="submit" class="button button-primary">Create Semester</button>
     </form>
 {% endblock %}

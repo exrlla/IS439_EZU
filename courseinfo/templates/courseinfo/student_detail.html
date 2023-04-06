@@ -6,12 +6,15 @@
 
 {% block content %}
     <h2>{{ student }}</h2>
-        <ul>
+    <ul class="ezu-button-list">
         <li>
-            <a href="{{ student.get_update_url }}">
-                Edit Student
-            </a>
-        </li>
+          <a href="{{ student.get_update_url }}"
+             class="button button-primary">
+            Edit Student</a></li>
+        <li>
+          <a href="{{ student.get_delete_url }}"
+             class="button button-primary">
+            Delete Student</a></li>
     </ul>
 
     <section>
@@ -38,10 +41,10 @@
         <ul>
             {% for registration in registration_list %}
                 <li>
-                    <a href="">{{ registration }}</a>
+                    <a href="{{ registration.get_absolute_url }}">{{ registration.section }}</a>
                 </li>
             {% empty %}
-                <li><em>There are currently no registrations for this student.</em></li>
+                <li><em>This student is not currently registered for any sections.</em></li>
             {% endfor %}
         </ul>
     </section>

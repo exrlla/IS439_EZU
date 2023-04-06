@@ -1,4 +1,4 @@
-{%  extends 'courseinfo/base.html' %}
+{% extends 'courseinfo/base.html' %}
 
 {% block title %}
     Section List
@@ -7,7 +7,8 @@
 {% block content %}
     <h2>Section List</h2>
     <div>
-    <a href="{% url 'courseinfo_section_create_urlpattern' %}">
+      <a href="{% url 'courseinfo_section_create_urlpattern' %}"
+      class="button button-primary">
         Create New Section</a>
     </div>
     <ul>
