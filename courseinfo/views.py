@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from courseinfo.forms import InstructorForm, SectionForm, CourseForm, SemesterForm, RegistrationForm, StudentForm
 from courseinfo.models import (
@@ -20,19 +20,15 @@ class InstructorList(PageLinksMixin, ListView):
     model = Instructor
 
 
-class InstructorDetail(View):
+class InstructorDetail(DetailView):
+    model = Instructor
 
-    def get(self, request, pk):
-        instructor = get_object_or_404(
-            Instructor,
-            pk=pk
-        )
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        instructor = self.get_object()
         section_list = instructor.sections.all()
-        return render(
-            request,
-            'courseinfo/instructor_detail.html',
-            {'instructor': instructor, 'section_list': section_list}
-        )
+        context['section_list'] = section_list
+        return context
 
 
 class InstructorCreate(ObjectCreateMixin, View):
@@ -109,39 +105,25 @@ class InstructorDelete(View):
         return redirect('courseinfo_instructor_list_urlpattern')
 
 
-# class SectionList(View):
-#
-#     def get(self, request):
-#         return render(
-#             request,
-#             'courseinfo/section_list.html',
-#             {'section_list': Section.objects.all()}
-#         )
-
 class SectionList(ListView):
     model = Section
 
 
-class SectionDetail(View):
+class SectionDetail(DetailView):
+    model = Section
 
-    def get(self, request, pk):
-        section = get_object_or_404(
-            Section,
-            pk=pk
-        )
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        section = self.get_object()
         semester = section.semester
         course = section.course
         instructor = section.instructor
         registration_list = section.registrations.all()
-        return render(
-            request,
-            'courseinfo/section_detail.html',
-            {'section': section,
-             'semester': semester,
-             'course': course,
-             'instructor': instructor,
-             'registration_list': registration_list}
-        )
+        context['semester'] = semester
+        context['course'] = course
+        context['instructor'] = instructor
+        context['registration_list'] = registration_list
+        return context
 
 
 class SectionCreate(ObjectCreateMixin, View):
@@ -218,36 +200,23 @@ class SectionDelete(View):
         return redirect('courseinfo_section_list_urlpattern')
 
 
-# class CourseList(View):
-#
-#     def get(self, request):
-#         return render(
-#             request,
-#             'courseinfo/course_list.html',
-#             {'course_list': Course.objects.all()}
-#         )
-
 class CourseList(ListView):
     model = Course
 
 
-class CourseDetail(View):
+class CourseDetail(DetailView):
+    model = Course
 
-    def get(self, request, pk):
-        course = get_object_or_404(
-            Course,
-            pk=pk
-        )
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        course = self.get_object()
         name = course.course_name
         number = course.course_number
         section_list = course.sections.all()
-        return render(
-            request,
-            'courseinfo/course_detail.html',
-            {'name': name,
-             'number': number,
-             'section_list': section_list}
-        )
+        context['name'] = name
+        context['number'] = number
+        context['section_list'] = section_list
+        return context
 
 
 class CourseCreate(ObjectCreateMixin, View):
@@ -328,19 +297,29 @@ class SemesterList(ListView):
     model = Semester
 
 
-class SemesterDetail(View):
+# class SemesterDetail(View):
+#
+#     def get(self, request, pk):
+#         semester = get_object_or_404(
+#             Semester,
+#             pk=pk
+#         )
+#         section_list = semester.sections.all()
+#         return render(
+#             request,
+#             'courseinfo/semester_detail.html',
+#             {'semester': semester, 'section_list': section_list}
+#         )
 
-    def get(self, request, pk):
-        semester = get_object_or_404(
-            Semester,
-            pk=pk
-        )
+class SemesterDetail(DetailView):
+    model = Semester
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        semester = self.get_object()
         section_list = semester.sections.all()
-        return render(
-            request,
-            'courseinfo/semester_detail.html',
-            {'semester': semester, 'section_list': section_list}
-        )
+        context['section_list'] = section_list
+        return context
 
 
 class SemesterCreate(ObjectCreateMixin, View):
@@ -417,69 +396,20 @@ class SemesterDelete(View):
         return redirect('courseinfo_semester_list_urlpattern')
 
 
-# class StudentList(View):
-#     page_kwarg = 'page'
-#     paginate_by = 25;  # 25 students per page
-#     template_name = 'courseinfo/student_list.html'
-#
-#     def get(self, request):
-#         students = Student.objects.all()
-#         paginator = Paginator(
-#             students,
-#             self.paginate_by
-#         )
-#         page_number = request.GET.get(
-#             self.page_kwarg
-#         )
-#         try:
-#             page = paginator.page(page_number)
-#         except PageNotAnInteger:
-#             page = paginator.page(1)
-#         except EmptyPage:
-#             page = paginator.page(
-#                 paginator.num_pages)
-#         if page.has_previous():
-#             prev_url = "?{pkw}={n}".format(
-#                 pkw=self.page_kwarg,
-#                 n=page.previous_page_number())
-#         else:
-#             prev_url = None
-#         if page.has_next():
-#             next_url = "?{pkw}={n}".format(
-#                 pkw=self.page_kwarg,
-#                 n=page.next_page_number())
-#         else:
-#             next_url = None
-#         context = {
-#             'is_paginated':
-#                 page.has_other_pages(),
-#             'next_page_url': next_url,
-#             'paginator': paginator,
-#             'previous_page_url': prev_url,
-#             'student_list': page,
-#         }
-#         return render(
-#             request, self.template_name, context)
-#
-
 class StudentList(PageLinksMixin, ListView):
     paginate_by = 25
     model = Student
 
 
-class StudentDetail(View):
+class StudentDetail(DetailView):
+    model = Student
 
-    def get(self, request, pk):
-        student = get_object_or_404(
-            Student,
-            pk=pk
-        )
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        student = self.get_object()
         registration_list = student.registrations.all()
-        return render(
-            request,
-            'courseinfo/student_detail.html',
-            {'registration_list': registration_list}
-        )
+        context['registration_list'] = registration_list
+        return context
 
 
 class StudentCreate(ObjectCreateMixin, View):
@@ -560,20 +490,18 @@ class RegistrationList(ListView):
     model = Registration
 
 
-class RegistrationDetail(View):
+class RegistrationDetail(DetailView):
+    model = Registration
 
-    def get(self, request, pk):
-        registration = get_object_or_404(
-            Registration,
-            pk=pk
-        )
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        registration = self.get_object()
         section = registration.section
         student = registration.student
-        return render(
-            request,
-            'courseinfo/registration_detail.html',
-            {'section': section, 'student': student}
-        )
+
+        context['section'] = section
+        context['student'] = student
+        return context
 
 
 class RegistrationCreate(ObjectCreateMixin, View):
