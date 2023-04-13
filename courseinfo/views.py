@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from courseinfo.forms import InstructorForm, SectionForm, CourseForm, SemesterForm, RegistrationForm, StudentForm
 from courseinfo.models import (
@@ -12,7 +12,7 @@ from courseinfo.models import (
     Student,
     Registration,
 )
-from courseinfo.utils import ObjectCreateMixin, PageLinksMixin
+from courseinfo.utils import PageLinksMixin
 
 
 class InstructorList(PageLinksMixin, ListView):
@@ -31,9 +31,9 @@ class InstructorDetail(DetailView):
         return context
 
 
-class InstructorCreate(ObjectCreateMixin, View):
+class InstructorCreate(CreateView):
     form_class = InstructorForm
-    template_name = 'courseinfo/instructor_form.html'
+    model = Instructor
 
 
 class InstructorUpdate(View):
@@ -126,9 +126,9 @@ class SectionDetail(DetailView):
         return context
 
 
-class SectionCreate(ObjectCreateMixin, View):
+class SectionCreate(CreateView):
     form_class = SectionForm
-    template_name = 'courseinfo/section_form.html'
+    model = Section
 
 
 class SectionUpdate(View):
@@ -219,9 +219,9 @@ class CourseDetail(DetailView):
         return context
 
 
-class CourseCreate(ObjectCreateMixin, View):
+class CourseCreate(CreateView):
     form_class = CourseForm
-    template_name = 'courseinfo/course_form.html'
+    model = Course
 
 
 class CourseUpdate(View):
@@ -297,20 +297,6 @@ class SemesterList(ListView):
     model = Semester
 
 
-# class SemesterDetail(View):
-#
-#     def get(self, request, pk):
-#         semester = get_object_or_404(
-#             Semester,
-#             pk=pk
-#         )
-#         section_list = semester.sections.all()
-#         return render(
-#             request,
-#             'courseinfo/semester_detail.html',
-#             {'semester': semester, 'section_list': section_list}
-#         )
-
 class SemesterDetail(DetailView):
     model = Semester
 
@@ -322,9 +308,9 @@ class SemesterDetail(DetailView):
         return context
 
 
-class SemesterCreate(ObjectCreateMixin, View):
+class SemesterCreate(CreateView):
     form_class = SemesterForm
-    template_name = 'courseinfo/semester_form.html'
+    model = Semester
 
 
 class SemesterUpdate(View):
@@ -412,9 +398,9 @@ class StudentDetail(DetailView):
         return context
 
 
-class StudentCreate(ObjectCreateMixin, View):
+class StudentCreate(CreateView):
     form_class = StudentForm
-    template_name = 'courseinfo/student_form.html'
+    model = Student
 
 
 class StudentUpdate(View):
@@ -504,9 +490,9 @@ class RegistrationDetail(DetailView):
         return context
 
 
-class RegistrationCreate(ObjectCreateMixin, View):
+class RegistrationCreate(CreateView):
     form_class = RegistrationForm
-    template_name = 'courseinfo/registration_form.html'
+    model = Registration
 
 
 class RegistrationUpdate(View):
