@@ -90,7 +90,7 @@ urlpatterns = [
          name='courseinfo_semester_detail_urlpattern'),
     path('semester/create/',
          SemesterCreate.as_view(),
-         name='courseinfo_semester/create_urlpattern'),
+         name='courseinfo_semester_create_urlpattern'),
     path('semester/<int:pk>/update/',
          SemesterUpdate.as_view(),
          name='courseinfo_semester_update_urlpattern'),
